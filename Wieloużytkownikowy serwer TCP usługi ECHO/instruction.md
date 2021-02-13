@@ -24,4 +24,4 @@ po stronie klienta i zwalnianie zasobów (wątków) w chwili zamykania programu,
 tyle danych, ile serwer otrzymał od klienta),
 - informowanie użytkownika o każdej otrzymanej wiadomości z zaznaczeniem IP i numeru portu
 nadawcy oraz treści i rozmiaru,
-- informowanie użytkownika o bieżącej liczbie połączonych klientów.
+-informowanie użytkownika o bieżącej liczbie połączonych klientów.
