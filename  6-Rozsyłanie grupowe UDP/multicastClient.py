@@ -1,9 +1,9 @@
-import socket, logging
+import socket, logging, time
 import struct
 import sys
 
 logging.basicConfig(level=logging.DEBUG,
-                    format='(%(threadName)-9s) %(message)s',)
+                    format='(%(threadName)-9s,) %(message)s',)
 
 
 class MulticastClient:
@@ -17,11 +17,12 @@ class MulticastClient:
         self.multicast_group = (self.host, self.port)
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-    def start_client(self, event):
+    def start_client(self):
         try:
             logging.debug("Multicast Client start")
-            self.message = bytes(input("Type your Multi-message: "))
-            self.host = str(input("UDP server IP or domain name (default: 224.3.29.71): "))
+            time.sleep(0.5)
+            self.message = bytes(input("Type your Multi-message: ").encode())
+            self.host = str(input("UDP client IP or domain name (default: 224.3.29.71): "))
             if len(self.host) == 0:
                 self.host = "224.3.29.71"
             self.port = input("Listening port (default - 7): ")
@@ -56,7 +57,7 @@ class MulticastClient:
                 logging.debug("waiting to recive")
                 try:
                     data, server = self.sock.recvfrom(16)
-                except self.socket.timeout:
+                except socket.timeout:
                     logging.debug('timed out, no more responses')
                     break
                 else:
@@ -65,4 +66,10 @@ class MulticastClient:
         finally:
             logging.debug("closing socket")
             self.sock.close()
+
+    def run(self, event):
+        event.wait()
+        self.start_client()
+        self.create_datagram_socket()
+        self.send_message()
 
